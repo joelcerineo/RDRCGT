@@ -9,6 +9,9 @@ Route::get('/', function () {
 Route::get('/', function () {
     return view('index');
 });
+
 Route::get('/filldocs', function () {
     return view('filldocs');
 })->name('filldocs');
+
+
