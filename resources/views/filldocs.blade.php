@@ -156,137 +156,379 @@
     </ul>
   </aside>
 
+
 {{-- resources/views/filldocs.blade.php --}}
 @include('partial.head')
 
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<body class="font-sans antialiased bg-gray-50 p-6">
 
-<body class="bg-[#F8FAFC] font-sans antialiased px-8 py-10" x-data="{ 
-  approveDropdown: false, 
-  seminarDropdown: false 
-}">
-  <div class="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-8">
+<div class="max-w-5xl mx-auto bg-white shadow-lg rounded-xl p-6 sm:p-8">
 
-    <!-- Header -->
-    <h1 class="text-2xl font-bold text-blue-900 mb-6">1.0 Cash Advances</h1>
+  <!-- Header -->
+  <header>
+    <h1 class="text-2xl md:text-3xl font-bold text-blue-900 mb-6">1.0 Cash Advances</h1>
+    <div class="flex flex-wrap gap-3 mb-8 border-b pb-6 border-gray-200">
+      <button id="btn-1-1" class="px-4 py-2 rounded-lg bg-blue-700 text-white shadow-md text-sm sm:text-base">1.1 Granting of Cash Advances</button>
+      <button id="btn-1-2" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 text-sm sm:text-base">1.2 Liquidation of Cash Advances</button>
+    </div>
+  </header>
 
-    <!-- Section buttons -->
-    <div class="flex flex-wrap gap-3 mb-8">
-      <button class="bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition">
-        1.1 Granting of Cash Advances
-      </button>
-      <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
-        1.2 Liquidation of Cash Advances
-      </button>
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Granting Section -->
+    <div id="section-1-1">
+      <div class="text-gray-800 leading-relaxed space-y-6">
+        <h2 class="text-xl font-semibold text-blue-900">1.1 Granting of Cash Advances</h2>
+    
+        <!-- Checklist Helper -->
+        <script>
+          function createCheckbox(text) {
+            const label = document.createElement('label');
+            label.className = "flex items-start space-x-3 text-gray-800";
+            const input = document.createElement('input');
+            input.type = "checkbox";
+            input.className = "mt-1 h-4 w-4 shrink-0 text-blue-700 border-gray-400 rounded focus:ring-blue-500 focus:ring-2";
+            const span = document.createElement('span');
+            span.innerHTML = text;
+            label.appendChild(input);
+            label.appendChild(span);
+            return label;
+          }
+
+          function createNestedList(text, children) {
+            const li = document.createElement('li');
+            li.className = "ml-6 list-none";
+            const label = createCheckbox(text);
+            li.appendChild(label);
+
+            if (children && children.length) {
+              const ul = document.createElement('ul');
+              ul.className = "mt-2 space-y-2";
+              children.forEach(child => {
+                if (child.type === "static") {
+                  const staticLi = document.createElement('li');
+                  staticLi.className = "sub-static ml-12 flex items-start space-x-3 text-gray-600";
+                  const dash = document.createElement('span');
+                  dash.textContent = "-";
+                  const spanText = document.createElement('span');
+                  spanText.innerHTML = child.text;
+                  staticLi.appendChild(dash);
+                  staticLi.appendChild(spanText);
+                  ul.appendChild(staticLi);
+                } else {
+                  ul.appendChild(createNestedList(child.text, child.children));
+                }
+              });
+              li.appendChild(ul);
+            }
+            return li;
+          }
+        </script>
+
+        <!-- Common Checklist -->
+        <div class="space-y-4">
+          <h3 class="font-bold text-gray-800">Documentary Requirements common to all cash advances except for travels</h3>
+          <ul id="common-checklist" class="space-y-2 list-none pl-0">
+            <script>
+              const commonItems = [
+                {text: "Authority of the accountable officer issued by the Head of the Agency or his duly authorized representative indicating the maximum accountability and purpose of cash advance (for initial cash advance)"},
+                {text: "Certification from the Accountant that previous cash advances have been liquidated and accounted for in the books"},
+                {text: "Approved application for bond and/or Fidelity Bond for the year for cash accountability of ₱2,000 or more"},
+              ];
+              const commonList = document.getElementById("common-checklist");
+              commonItems.forEach(item => commonList.appendChild(createCheckbox(item.text)));
+            </script>
+          </ul>
+        </div>
+
+        <!-- Payroll Checklist -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-900">1.1.1 Payroll Fund for Salaries, Wages, Allowances, Honoraria and Other Similar Expenses</h3>
+          <p>The cash advance for payroll fund shall be equal to the net amount of the payroll for the pay period.</p>
+          <h4 class="font-semibold">Additional Documentary Requirements:</h4>
+          <ul id="payroll-checklist" class="space-y-2 list-none pl-0">
+            <script>
+              const payrollItems = [
+                {text:"Approved contracts (for initial payment)"},
+                {text:"Approved Payroll or list of payees indicating their net payments"},
+                {text:"Approval/authority (presidential directive or legislative enactment) or legal basis to pay any allowance/salaries/wages/fringe benefits"},
+                {text:"Daily time record (DTR) approved by the supervisor"},
+              ];
+              const payrollList = document.getElementById("payroll-checklist");
+              payrollItems.forEach(item => payrollList.appendChild(createCheckbox(item.text)));
+            </script>
+          </ul>
+        </div>
+
+        <!-- PCF Checklist -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-900">1.1.2 Petty Cash Fund (PCF)</h3>
+          <p>The PCF to be set up shall be sufficient for the recurring petty operating expenses of the agency for one month. Payments out of PCF, which shall be made through a Petty Cash Voucher, shall be allowed only for amounts not exceeding ₱15,000 for each transaction.</p>
+          <ul id="pcf-checklist" class="space-y-2 list-none pl-0">
+            <script>
+              const pcfItems = [
+                {text:"Approved estimates of petty expenses for one month"},
+                {text:"Copy of policy for maintaining PCF under the imprest system for GOCCs"}
+              ];
+              const pcfList = document.getElementById("pcf-checklist");
+              pcfItems.forEach(item => pcfList.appendChild(createCheckbox(item.text)));
+            </script>
+          </ul>
+        </div>
+
+        <!-- COE Checklist -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-900">1.1.3 Field/Activity Current Operating Expenses (COE)</h3>
+          <p>The amount of the cash advance shall be limited to the requirements for two months.</p>
+          <ul id="coe-checklist" class="space-y-2 list-none pl-0">
+            <script>
+              const coeItems = [{text:"Approved Budget for COE of the agency field office or agency activity in the field"}];
+              const coeList = document.getElementById("coe-checklist");
+              coeItems.forEach(item => coeList.appendChild(createCheckbox(item.text)));
+            </script>
+          </ul>
+        </div>
+
+        <!-- Traveling Checklist -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-blue-900">1.1.4 Traveling Allowances</h3>
+          <h4 class="font-semibold">General Guidelines</h4>
+          <ul class="list-disc list-inside space-y-2 pl-4">
+            <li>Under Section 2, Executive Order (EO) No. 248 dated May 29, 1995...</li>
+            <li>No government fund shall be utilized to defray foreign travel expenses...</li>
+          </ul>
+
+          <!-- Local Travel -->
+          <div class="pl-4 mt-4 space-y-4">
+            <h5 class="font-semibold text-lg">1.1.4.1 Local Travel</h5>
+            <p class="font-semibold text-gray-700">Documentary Requirements:</p>
+            <ul id="local-travel-checklist" class="space-y-2 list-none pl-0">
+              <script>
+                const localTravelItems = [
+                  {text:"Office Order/Travel Order approved in accordance with Section 3 of EO No. 298"},
+                  {text:"Duly approved itinerary of travel"},
+                  {text:"Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books"}
+                ];
+                const localTravelList = document.getElementById("local-travel-checklist");
+                localTravelItems.forEach(item => localTravelList.appendChild(createCheckbox(item.text)));
+              </script>
+            </ul>
+          </div>
+
+          <!-- Foreign Travel -->
+          <div class="pl-4 mt-4 space-y-4">
+            <h5 class="font-semibold text-lg">1.1.4.2 Foreign Travel</h5>
+            <p class="font-semibold text-gray-700">Documentary Requirements:</p>
+            <ul id="foreign-travel-checklist" class="space-y-2 list-none pl-0">
+              <script>
+                const foreignTravelItems = [
+                  {
+                    text:"Office Order/Travel Order approved in accordance with the provisions of Sections 1 and 2 of EO No. 459 dated September 1, 2005",
+                    children:[
+                      {
+                        type:"nested",
+                        text:"As approved by the Office of the President in case of the following officials:",
+                        children:[
+                          {type:"static", text:"Members of the cabinet and officials of equivalent rank"},
+                          {type:"static", text:"Heads of GOCCs and GFIs under or attached to the Office of the President"},
+                          {type:"static", text:"Heads of agencies under or attached to the Office of the President (OP)"},
+                          {type:"static", text:"The Chief Justice and Associate Justices of the Supreme Court were exempted under Memorandum Order No. 26 dated July 31, 1986. Under EO No. 477 dated August 21, 1991, the Chairman and Commissioners of the Constitutional Commissions, Chairman and Members of the Commission on Human Rights, Ombudsman and Deputy Ombudsmen were also exempted from securing prior approval from the Office of the President in connection with travels abroad."}
+                        ]
+                      },
+                      {
+                        type:"nested",
+                        text:"As approved by the respective heads of agencies in the case of other government officials and employees regardless of the length of travel:",
+                        children:[
+                          {type:"static", text:"National agencies – Department Secretaries or their equivalents"},
+                          {type:"static", text:"GOCCs and GFIs attached to the OP – Heads of the GOCCs or GFIs"},
+                          {type:"static", text:"GOCCs and GFIs not attached to the OP – Department Heads to which they are attached"},
+                          {type:"static", text:"Provincial Governors and Mayors of highly urbanized cities or independent component cities"},
+                          {type:"static", text:"Secretary of the Department of the Interior and Local Government"},
+                          {type:"static", text:"State Universities and Colleges (SUCs) – Chairman of CHED for heads of SUCs and respective heads for other officials/employees"},
+                          {type:"static", text:"Technical and Vocational Schools – Chairman of TESDA for heads of schools and respective heads for other officials/employees"}
+                        ]
+                      }
+                    ]
+                  },
+                  {text:"Duly approved itinerary of travel"},
+                  {text:"Letter of invitation of host/sponsoring country/agency/organization"},
+                  {text:"For plane fare, quotations of three travel agencies or its equivalent"},
+                  {text:"Flight itinerary issued by the airline/ticketing office/travel agency"},
+                  {text:"Copy of the UNDP rate for the daily subsistence allowance (DSA) for the country of destination"},
+                  {text:"Document to show the dollar to peso exchange rate at the date of grant"},
+                  {text:"Where applicable, authority from the Office of the President to claim representation expenses"},
+                  {
+                    text:"In case of seminars/trainings",
+                    children:[
+                      {text:"Invitation addressed to the agency inviting participants (issued by the foreign country)"},
+                      {text:"Acceptance of the nominees as participants (issued by the foreign country)"},
+                      {text:"Programme Agenda and Logistics Information"}
+                    ]
+                  },
+                  {text:"Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books"},
+                ];
+
+                const foreignTravelList = document.getElementById("foreign-travel-checklist");
+                foreignTravelItems.forEach(item => foreignTravelList.appendChild(createNestedList(item.text, item.children)));
+              </script>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+<!-- Liquidation Section -->
+<div id="section-1-2" class="hidden">
+  <div class="text-gray-800 leading-relaxed space-y-6">
+    <h2 class="text-xl font-semibold text-blue-900">1.2 Liquidation of Cash Advances</h2>
+
+    <!-- General Guidelines -->
+    <div class="space-y-4">
+      <h3 class="font-bold text-gray-800">General Guidelines</h3>
+      <ul class="list-disc list-inside space-y-2 pl-4">
+        <li><strong>Salaries, Wages, Allowances, Honoraria and Other Similar Payments</strong> – within five calendar days after the end of the pay period</li>
+        <li><strong>Field Operating Expenses</strong> – within 30 calendar days after the end of the year...</li>
+        <li><strong>Petty Cash Fund (PCF)</strong> – as soon as the disbursements reach 75 percent...</li>
+        <li><strong>Traveling Expenses</strong> – within 30 days after the return of the official/employee...</li>
+        <li><strong>Special purpose</strong> – as soon as the purpose of the cash advance has been served.</li>
+      </ul>
     </div>
 
-    <!-- Full content -->
-    <div class="text-gray-800 leading-relaxed space-y-4">
-      <h2 class="text-xl font-semibold">1.1 Granting of Cash Advances</h2>
+    <p>Documentary requirements are similar to Granting but for liquidation, including receipts, vouchers, and supporting documents.</p>
 
-      <!-- Common Requirements -->
-      <h3 class="font-bold text-gray-800 mt-6">Documentary Requirements common to all cash advances except for travels</h3>
-      <form class="space-y-1">
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Authority of the accountable officer issued by the Head of the Agency or his duly authorized representative indicating the maximum accountability and purpose of cash advance (for initial cash advance)</span>
-        </label>
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Certification from the Accountant that previous cash advances have been liquidated and accounted for in the books</span>
-        </label>
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Approved application for bond and/or Fidelity Bond for the year for cash accountability of ₱2,000 or more</span>
-        </label>
-      </form>
+    <!-- 1.2.1 Payroll Fund -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-blue-900">1.2.1 Payroll Fund for Salaries, Wages, Allowances, Honoraria and Other Similar Expenses</h3>
+      <ul class="ml-4 space-y-2 list-none">
+        <li><input type="checkbox" class="mr-2">Report of Disbursements certified correct by the accountable officer</li>
+        <li><input type="checkbox" class="mr-2">Approved payrolls/vouchers duly acknowledged/signed by the payee/s</li>
+        <li><input type="checkbox" class="mr-2">Approved daily time records (DTRs) or Certificate of Service</li>
+        <li><input type="checkbox" class="mr-2">Approved application for leave</li>
+        <li><input type="checkbox" class="mr-2">In case of payment of personnel under the "job order" status, duly verified/accepted accomplishment report</li>
+        <li><input type="checkbox" class="mr-2">Official Receipt (OR) in case of refund for unclaimed salaries</li>
+        <li><input type="checkbox" class="mr-2">Authority from the claimant and identification documents, if claimed by person other than the payee</li>
+        <li><input type="checkbox" class="mr-2">Such other pertinent supporting documents as are required by the nature of expense</li>
+      </ul>
+    </div>
 
-      <!-- Other Sections (Payroll, Petty Cash, etc.) remain unchanged -->
+    <!-- 1.2.2 Petty Cash Fund -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-blue-900">1.2.2 Petty Cash Fund</h3>
+      <ul class="ml-4 space-y-2 list-none">
+        <li><input type="checkbox" class="mr-2">Summary of Petty Cash Vouchers</li>
+        <li><input type="checkbox" class="mr-2">Report of Disbursements</li>
+        <li><input type="checkbox" class="mr-2">Petty Cash Replenishment Report</li>
+        <li><input type="checkbox" class="mr-2">Approved purchase request with certificate of Emergency Purchase, if necessary</li>
+        <li><input type="checkbox" class="mr-2">Bills, receipts, sales invoices</li>
+        <li><input type="checkbox" class="mr-2">Certificate of inspection and acceptance</li>
+        <li><input type="checkbox" class="mr-2">Report of Waste Materials in case of replacement/repair</li>
+        <li><input type="checkbox" class="mr-2">Approved trip ticket, for gasoline expenses</li>
+        <li><input type="checkbox" class="mr-2">Canvass from at least three suppliers for purchases involving ₱1,000 and above, except for purchases made while on official travel</li>
+        <li><input type="checkbox" class="mr-2">Summary/Abstract of Canvass</li>
+        <li><input type="checkbox" class="mr-2">Petty Cash Vouchers duly accomplished and signed</li>
+        <li><input type="checkbox" class="mr-2">OR in case of refund</li>
 
-      <h3 class="text-lg font-semibold text-blue-900 mt-6">1.1.4 Traveling Allowances</h3>
+        <!-- Reimbursement of Toll Receipts with children checkboxes -->
+        <li>
+          <input type="checkbox" class="mr-2">For reimbursement of toll receipts
+          <ul class="ml-6 space-y-2 list-none">
+            <li><input type="checkbox" class="mr-2">Toll Receipts</li>
+            <li><input type="checkbox" class="mr-2">Trip tickets</li>
+          </ul>
+        </li>
 
-      <h4 class="font-semibold">General Guidelines</h4>
-      <form class="space-y-1">
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Under Section 2, Executive Order (EO) No. 248 dated May 29, 1995 as amended by EO No. 248A dated August 14, 1995 and EO No. 298 dated March 23, 2004, travels shall cover only those that are urgent and extremely necessary, will involve the minimum expenditure and are beneficial to the agency concerned and/or the country.</span>
-        </label>
-      </form>
+        <li><input type="checkbox" class="mr-2">Such other supporting documents that may be required and/or required under the company policy depending on the nature of expenses</li>
+      </ul>
+    </div>
+
+    <!-- 1.2.3 Field/Activity Current Operating Expenses -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-blue-900">1.2.3 Field/Activity Current Operating Expenses</h3>
+      <p>Same requirements as those for salaries, petty operating expenses, other personal services, and maintenance and other operating expenses depending on the nature of expenses incurred</p>
+    </div>
+
+    <!-- 1.2.4 Traveling Expenses -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-blue-900">1.2.4 Traveling Expenses</h3>
 
       <!-- Local Travel -->
-      <h3 class="text-lg font-semibold text-blue-900 mt-6">1.1.4.1 Local Travel</h3>
-      <h4 class="font-semibold">Documentary Requirements:</h4>
-      <form class="space-y-1">
-        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Office Order/Travel Order approved in accordance with Section 3 of EO No. 298</span></label>
-        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Duly approved itinerary of travel</span></label>
-        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books</span></label>
-      </form>
+      <div class="pl-4 space-y-2">
+        <h4 class="font-semibold">1.2.4.1 Local Travel</h4>
+        <ul class="ml-4 space-y-2 list-none">
+          <li><input type="checkbox" class="mr-2">Paper/electronic plane, boat or bus tickets, boarding pass, terminal fee</li>
+          <li><input type="checkbox" class="mr-2">Certificate of appearance/attendance</li>
+          <li><input type="checkbox" class="mr-2">Copy of previously approved Itinerary of Travel</li>
+          <li><input type="checkbox" class="mr-2">Revised or supplemental Office Order or any proof supporting the change of schedule</li>
+          <li><input type="checkbox" class="mr-2">Revised Itinerary of Travel, if the previous approved itinerary was not followed</li>
+          <li><input type="checkbox" class="mr-2">Certification by the Head of Agency as to the absolute necessity of the expenses together with the corresponding bills or receipts, if the expenses incurred for official travel exceeded the prescribed rate per day (certification or affidavit of loss shall not be considered as an appropriate replacement for the required hotel/lodging bills and receipts)</li>
+          <li><input type="checkbox" class="mr-2">Liquidation Report</li>
+          <li><input type="checkbox" class="mr-2">Reimbursement Expense Receipt (RER)</li>
+          <li><input type="checkbox" class="mr-2">OR in case of refund of excess cash advance</li>
+          <li><input type="checkbox" class="mr-2">Certificate of Travel Completed</li>
+          <li><input type="checkbox" class="mr-2">Hotel room/lodging bills with official receipts in the case of official travel to places within 50-kilometer radius from the last city or municipality covered by the Metro Manila Area, or the city or municipality where their permanent official station is located in the case of those outside the Metro Manila Area, if the travel allowances being claimed include the hotel room/lodging rate</li>
+        </ul>
+      </div>
 
       <!-- Foreign Travel -->
-      <h3 class="text-lg font-semibold text-blue-900 mt-6">1.1.4.2 Foreign Travel</h3>
-      <h4 class="font-semibold">Documentary Requirements:</h4>
+      <div class="pl-4 space-y-2">
+        <h4 class="font-semibold">1.2.4.2 Foreign Travel</h4>
+        <ul class="ml-4 space-y-2 list-none">
+          <li><input type="checkbox" class="mr-2">Paper/electronic plane tickets, boarding pass, boat or bus ticket</li>
+          <li><input type="checkbox" class="mr-2">Certificate of appearance/attendance for training/seminar/participation</li>
+          <li><input type="checkbox" class="mr-2">Bills/receipts for non-commutable representation expenses approved by the President under Section 13 of EO No. 248</li>
 
-      <form class="space-y-2">
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Office Order/Travel Order approved in accordance with the provisions of Sections 1 and 2 of EO No. 459 dated September 1, 2005</span>
-        </label>
+          <!-- Reimbursement for actual travel expenses with children checkboxes -->
+          <li>
+            <input type="checkbox" class="mr-2">For reimbursement of actual travel expenses in excess of the prescribed rate (EO No. 298)
+            <ul class="ml-6 space-y-2 list-none">
+              <li><input type="checkbox" class="mr-2">Approval by the President</li>
+              <li><input type="checkbox" class="mr-2">Certification from the Head of Agency that it is absolutely necessary</li>
+              <li><input type="checkbox" class="mr-2">Hotel room bills with official receipts (certification or affidavit of loss shall not be considered as an appropriate replacement for the required hotel/lodging bills and receipts)</li>
+            </ul>
+          </li>
 
-        <!-- DROPDOWN #1: As approved by the Office of the President -->
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" x-model="approveDropdown" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>As approved by the Office of the President in case of the following officials:</span>
-        </label>
-
-        <div x-show="approveDropdown" x-transition class="ml-6 border-l-2 border-blue-300 pl-4 space-y-1">
-          <p class="text-sm font-semibold text-blue-900">Officials requiring OP approval:</p>
-          <ul class="list-disc list-inside text-sm space-y-1">
-            <li>Members of the Cabinet and officials of equivalent rank</li>
-            <li>Heads of GOCCs and GFIs under or attached to the Office of the President</li>
-          </ul>
-
-          <p class="text-sm font-semibold text-blue-900 mt-3">Officials approved by their respective department heads:</p>
-          <ul class="list-disc list-inside text-sm space-y-1">
-            <li>Provincial Governors and Mayors of highly urbanized cities</li>
-            <li>Heads of SUCs and Technical Schools (as approved by CHED or TESDA)</li>
-          </ul>
-        </div>
-
-        <!-- Other checklist items -->
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Duly approved itinerary of travel</span>
-        </label>
-
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>Letter of invitation of host/sponsoring country/agency/organization</span>
-        </label>
-
-        <!-- DROPDOWN #2: In case of seminars/trainings -->
-        <label class="flex items-start space-x-2">
-          <input type="checkbox" x-model="seminarDropdown" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
-          <span>In case of seminars/trainings</span>
-        </label>
-
-        <div x-show="seminarDropdown" x-transition class="ml-6 border-l-2 border-blue-300 pl-4 space-y-1">
-          <label class="flex items-start space-x-2"><input type="checkbox" class="h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Invitation addressed to the agency inviting participants (issued by the foreign country)</span></label>
-          <label class="flex items-start space-x-2"><input type="checkbox" class="h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Acceptance of the nominees as participants (issued by the foreign country)</span></label>
-          <label class="flex items-start space-x-2"><input type="checkbox" class="h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Programme Agenda and Logistics Information</span></label>
-        </div>
-
-        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books</span></label>
-      </form>
-    </div>
-
-    <!-- Bottom button -->
-    <div class="text-right mt-8">
-      <button class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-lg shadow-md transition">Submit</button>
+          <li><input type="checkbox" class="mr-2">Revised Itinerary of Travel, if applicable</li>
+          <li><input type="checkbox" class="mr-2">Narrative report on trip undertaken/Report on Participation</li>
+          <li><input type="checkbox" class="mr-2">OR in case of refund of excess cash advance</li>
+          <li><input type="checkbox" class="mr-2">Certificate of Travel Completed</li>
+          <li><input type="checkbox" class="mr-2">Liquidation Report</li>
+        </ul>
+      </div>
     </div>
 
   </div>
-</body>
+</div>
 
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+    <button id="back-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold px-6 py-2 rounded-lg shadow-md transition-all duration-200 ease-in-out">Back</button>
+    <button id="next-btn" class="bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-2 rounded-lg shadow-md transition-all duration-200 ease-in-out">Next</button>
+  </footer>
+
+</div>
+
+<script>
+  const btn11 = document.getElementById("btn-1-1");
+  const btn12 = document.getElementById("btn-1-2");
+  const section11 = document.getElementById("section-1-1");
+  const section12 = document.getElementById("section-1-2");
+
+  btn11.addEventListener("click", () => {
+    section11.classList.remove("hidden");
+    section12.classList.add("hidden");
+  });
+
+  btn12.addEventListener("click", () => {
+    section11.classList.add("hidden");
+    section12.classList.remove("hidden");
+  });
+</script>
+
+</body>
+</html>
 
     </div>
   </main>

@@ -19,7 +19,3 @@ Route::get('/filldocs', function () {
 
 
 
-
-Route::get('/', function () {
-    return view('cash-advance-checklist');
-});

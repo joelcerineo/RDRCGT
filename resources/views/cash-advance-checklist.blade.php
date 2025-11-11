@@ -6,7 +6,6 @@
 <title>Cash Advances Checklist</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  /* Sub-nested static item */
   .sub-static span:first-child {
     display: inline-block;
     width: 1rem;
@@ -32,21 +31,7 @@
     <div id="section-1-1">
       <div class="text-gray-800 leading-relaxed space-y-6">
         <h2 class="text-xl font-semibold text-blue-900">1.1 Granting of Cash Advances</h2>
-        <p>The rules and regulations on the grant and liquidation of cash advances are prescribed under COA Circular No. 97-002 dated February 10, 1997 and reiterated in COA Circular No. 2009-002 dated May 18, 2009 and Section 89 of PD No. 1445. These guidelines provide, among others:</p>
-
-        <!-- General Guidelines -->
-        <div class="space-y-4">
-          <h3 class="font-bold text-gray-800">General Guidelines</h3>
-          <ul class="list-disc list-inside space-y-2 pl-4">
-            <li>No cash advance shall be given unless for a legally authorized specific purpose.</li>
-            <li>No additional cash advances shall be allowed to any official or employee unless the previous cash advance given to him is first liquidated and accounted for in the books.</li>
-            <li>No cash advance shall be granted for payments on account of infrastructure projects or other undertaking on a project basis.</li>
-            <li>A cash advance shall be reported as soon as the purpose for which it was given has been served.</li>
-            <li>Only permanently appointed officials shall be designated as disbursing officers. Elected officials may be granted a cash advance only for their official traveling expenses.</li>
-            <li>Transfer of cash advances from one Accountable Officer to another shall not be allowed.</li>
-          </ul>
-        </div>
-
+    
         <!-- Checklist Helper -->
         <script>
           function createCheckbox(id, text) {
@@ -63,6 +48,7 @@
             return label;
           }
 
+          // Updated nested list function (now adds checkboxes to all nested children)
           function createNestedList(id, text, children) {
             const li = document.createElement('li');
             li.className = "ml-6 list-none";
@@ -82,6 +68,7 @@
               const ul = document.createElement('ul');
               ul.className = "mt-2 space-y-2";
               children.forEach(child => {
+                // if explicitly static
                 if (child.type === "static") {
                   const staticLi = document.createElement('li');
                   staticLi.className = "sub-static ml-12 flex items-start space-x-3 text-gray-600";
@@ -93,6 +80,7 @@
                   staticLi.appendChild(spanText);
                   ul.appendChild(staticLi);
                 } else {
+                  // recursive creation for any other nested item with checkbox
                   ul.appendChild(createNestedList(child.id, child.text, child.children));
                 }
               });
@@ -232,21 +220,21 @@
                   },
                   {id:"g-ft-2", text:"Duly approved itinerary of travel"},
                   {id:"g-ft-3", text:"Letter of invitation of host/sponsoring country/agency/organization"},
-                  {id:"g-ft-4", type:"nested", text:"Plane fare / Travel cost documents", children:[
-                    {id:"g-ft-4a", type:"static", text:"Quotations of three travel agencies or its equivalent"},
-                    {id:"g-ft-4b", type:"static", text:"Flight itinerary issued by the airline/ticketing office/travel agency"},
-                    {id:"g-ft-4c", type:"static", text:"Official receipt for payment of plane fare"},
-                    {id:"g-ft-4d", type:"static", text:"If applicable, visa and travel insurance documents"}
-                  ]},
-                  {id:"g-ft-5", text:"Copy of the UNDP rate for the daily subsistence allowance (DSA) for the country of destination for computation of DSA to be claimed"},
-                  {id:"g-ft-6", text:"Document to show the dollar to peso exchange rate at the date of grant of cash advance"},
-                  {id:"g-ft-7", text:"Where applicable, authority from the Office of the President to claim representation expenses"},
-                  {id:"g-ft-8", type:"nested", text:"In case of seminars/trainings", children:[
-                    {id:"g-ft-8a", type:"static", text:"Invitation addressed to the agency inviting participants (issued by the foreign country)"},
-                    {id:"g-ft-8b", type:"static", text:"Acceptance of the nominees as participants (issued by the foreign country)"},
-                    {id:"g-ft-8c", type:"static", text:"Programme Agenda and Logistics Information"},
-                    {id:"g-ft-8d", type:"static", text:"Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books"}
-                  ]}
+                  {id:"g-ft-4", text:"For plane fare, quotations of three travel agencies or its equivalent"},
+                  {id:"g-ft-5", text:"Flight itinerary issued by the airline/ticketing office/travel agency"},
+                  {id:"g-ft-6", text:"Copy of the UNDP rate for the daily subsistence allowance (DSA) for the country of destination"},
+                  {id:"g-ft-7", text:"Document to show the dollar to peso exchange rate at the date of grant"},
+                  {id:"g-ft-8", text:"Where applicable, authority from the Office of the President to claim representation expenses"},
+                  {
+                    id:"g-ft-9",
+                    text:"In case of seminars/trainings",
+                    children:[
+                      {id:"g-ft-10", text:"Invitation addressed to the agency inviting participants (issued by the foreign country)"},
+                      {id:"g-ft-11", text:"Acceptance of the nominees as participants (issued by the foreign country)"},
+                      {id:"g-ft-12", text:"Programme Agenda and Logistics Information"}
+                    ]
+                  },
+                  {id:"g-ft-13", text:"Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books"},
                 ];
 
                 const foreignTravelList = document.getElementById("foreign-travel-checklist");
@@ -268,7 +256,7 @@
           <ul class="list-disc list-inside space-y-2 pl-4">
             <li><strong>Salaries, Wages, Allowances, Honoraria and Other Similar Payments</strong> – within five calendar days after the end of the pay period</li>
             <li><strong>Field Operating Expenses</strong> – within 30 calendar days after the end of the year...</li>
-            <li><strong>Petty Cash Fund (PCF)</strong> – as soon as the disbursements reaches 75 percent...</li>
+            <li><strong>Petty Cash Fund (PCF)</strong> – as soon as the disbursements reach 75 percent...</li>
             <li><strong>Traveling Expenses</strong> – within 30 days after the return of the official/employee...</li>
             <li><strong>Special purpose</strong> – as soon as the purpose of the cash advance has been served.</li>
           </ul>
