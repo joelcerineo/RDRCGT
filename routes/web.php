@@ -15,3 +15,11 @@ Route::get('/filldocs', function () {
 })->name('filldocs');
 
 
+
+
+
+
+
+Route::get('/', function () {
+    return view('cash-advance-checklist');
+});

@@ -156,10 +156,138 @@
     </ul>
   </aside>
 
-  <!-- ===== Main Content ===== -->
-  <main id="mainContent" class="relative z-10 flex-grow px-10 py-10 overflow-y-auto">
-    <div class="bg-[#E6EBF3] px-6 py-4 rounded-xl shadow-md text-[#001f74] font-semibold text-lg">
-      <p>Select any section from the sidebar menu to view its document form.</p>
+{{-- resources/views/filldocs.blade.php --}}
+@include('partial.head')
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<body class="bg-[#F8FAFC] font-sans antialiased px-8 py-10" x-data="{ 
+  approveDropdown: false, 
+  seminarDropdown: false 
+}">
+  <div class="max-w-5xl mx-auto bg-white shadow-md rounded-xl p-8">
+
+    <!-- Header -->
+    <h1 class="text-2xl font-bold text-blue-900 mb-6">1.0 Cash Advances</h1>
+
+    <!-- Section buttons -->
+    <div class="flex flex-wrap gap-3 mb-8">
+      <button class="bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition">
+        1.1 Granting of Cash Advances
+      </button>
+      <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+        1.2 Liquidation of Cash Advances
+      </button>
+    </div>
+
+    <!-- Full content -->
+    <div class="text-gray-800 leading-relaxed space-y-4">
+      <h2 class="text-xl font-semibold">1.1 Granting of Cash Advances</h2>
+
+      <!-- Common Requirements -->
+      <h3 class="font-bold text-gray-800 mt-6">Documentary Requirements common to all cash advances except for travels</h3>
+      <form class="space-y-1">
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Authority of the accountable officer issued by the Head of the Agency or his duly authorized representative indicating the maximum accountability and purpose of cash advance (for initial cash advance)</span>
+        </label>
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Certification from the Accountant that previous cash advances have been liquidated and accounted for in the books</span>
+        </label>
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Approved application for bond and/or Fidelity Bond for the year for cash accountability of ₱2,000 or more</span>
+        </label>
+      </form>
+
+      <!-- Other Sections (Payroll, Petty Cash, etc.) remain unchanged -->
+
+      <h3 class="text-lg font-semibold text-blue-900 mt-6">1.1.4 Traveling Allowances</h3>
+
+      <h4 class="font-semibold">General Guidelines</h4>
+      <form class="space-y-1">
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Under Section 2, Executive Order (EO) No. 248 dated May 29, 1995 as amended by EO No. 248A dated August 14, 1995 and EO No. 298 dated March 23, 2004, travels shall cover only those that are urgent and extremely necessary, will involve the minimum expenditure and are beneficial to the agency concerned and/or the country.</span>
+        </label>
+      </form>
+
+      <!-- Local Travel -->
+      <h3 class="text-lg font-semibold text-blue-900 mt-6">1.1.4.1 Local Travel</h3>
+      <h4 class="font-semibold">Documentary Requirements:</h4>
+      <form class="space-y-1">
+        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Office Order/Travel Order approved in accordance with Section 3 of EO No. 298</span></label>
+        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Duly approved itinerary of travel</span></label>
+        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books</span></label>
+      </form>
+
+      <!-- Foreign Travel -->
+      <h3 class="text-lg font-semibold text-blue-900 mt-6">1.1.4.2 Foreign Travel</h3>
+      <h4 class="font-semibold">Documentary Requirements:</h4>
+
+      <form class="space-y-2">
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Office Order/Travel Order approved in accordance with the provisions of Sections 1 and 2 of EO No. 459 dated September 1, 2005</span>
+        </label>
+
+        <!-- DROPDOWN #1: As approved by the Office of the President -->
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" x-model="approveDropdown" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>As approved by the Office of the President in case of the following officials:</span>
+        </label>
+
+        <div x-show="approveDropdown" x-transition class="ml-6 border-l-2 border-blue-300 pl-4 space-y-1">
+          <p class="text-sm font-semibold text-blue-900">Officials requiring OP approval:</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Members of the Cabinet and officials of equivalent rank</li>
+            <li>Heads of GOCCs and GFIs under or attached to the Office of the President</li>
+          </ul>
+
+          <p class="text-sm font-semibold text-blue-900 mt-3">Officials approved by their respective department heads:</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Provincial Governors and Mayors of highly urbanized cities</li>
+            <li>Heads of SUCs and Technical Schools (as approved by CHED or TESDA)</li>
+          </ul>
+        </div>
+
+        <!-- Other checklist items -->
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Duly approved itinerary of travel</span>
+        </label>
+
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>Letter of invitation of host/sponsoring country/agency/organization</span>
+        </label>
+
+        <!-- DROPDOWN #2: In case of seminars/trainings -->
+        <label class="flex items-start space-x-2">
+          <input type="checkbox" x-model="seminarDropdown" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded">
+          <span>In case of seminars/trainings</span>
+        </label>
+
+        <div x-show="seminarDropdown" x-transition class="ml-6 border-l-2 border-blue-300 pl-4 space-y-1">
+          <label class="flex items-start space-x-2"><input type="checkbox" class="h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Invitation addressed to the agency inviting participants (issued by the foreign country)</span></label>
+          <label class="flex items-start space-x-2"><input type="checkbox" class="h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Acceptance of the nominees as participants (issued by the foreign country)</span></label>
+          <label class="flex items-start space-x-2"><input type="checkbox" class="h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Programme Agenda and Logistics Information</span></label>
+        </div>
+
+        <label class="flex items-start space-x-2"><input type="checkbox" class="mt-1 h-4 w-4 text-blue-700 border-gray-400 rounded"><span>Certification from the accountant that the previous cash advance has been liquidated and accounted for in the books</span></label>
+      </form>
+    </div>
+
+    <!-- Bottom button -->
+    <div class="text-right mt-8">
+      <button class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-lg shadow-md transition">Submit</button>
+    </div>
+
+  </div>
+</body>
+
+
     </div>
   </main>
 
